@@ -10,6 +10,7 @@ struct Name {
 
     Name(string, string, string);
 
+    // Returns the name.
     string getName();
 
 private:

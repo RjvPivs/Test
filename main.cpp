@@ -15,10 +15,12 @@ using std::cin;
 using std::string;
 using std::vector;
 using std::thread;
-
+// Vector for birthdays.
 vector<Birthday> bd;
+// Vector for events.
 vector<Event> ev;
 
+// String splitter.
 vector<string> separate(string s, char del) {
     std::stringstream ss(s);
     string word;
@@ -30,6 +32,7 @@ vector<string> separate(string s, char del) {
     return temp;
 }
 
+// Interface for adding new events.
 void interfaceAdd() {
     cout << "Please, enter the type of event:\n1. Birthday\n2. Event\n";
     int checker;
@@ -38,6 +41,7 @@ void interfaceAdd() {
         cout << "Please, re-enter the type:\n";
         cin >> checker;
     }
+    // Adds a birthday.
     if (checker == 1) {
         cout << "Please, enter the name, the date and the age:\nName:  ";
         string name, surname, middleName, date;
@@ -54,6 +58,7 @@ void interfaceAdd() {
         } else {
             cout << "This person has been already added!\n";
         }
+        // Adds an event.
     } else {
         cout << "Please, enter the expiration date and the description:\nExpiration date: ";
         string date, time, description;
@@ -70,6 +75,7 @@ void interfaceAdd() {
     }
 }
 
+// Prints birthdays by name.
 void printNames() {
     std::sort(bd.begin(), bd.end());
     cout << "\nPlease, enter the name: ";
@@ -83,6 +89,7 @@ void printNames() {
     }
 }
 
+// Prints events by date of creation or expiration.
 void printDates(bool check) {
     std::sort(bd.begin(), bd.end());
     std::sort(ev.begin(), ev.end());
@@ -111,6 +118,7 @@ void printDates(bool check) {
     }
 }
 
+// Prints events which are going to be expired today.
 void printToday() {
     std::sort(ev.begin(), ev.end());
     time_t now = time(0);
@@ -132,6 +140,7 @@ void printToday() {
     }
 }
 
+// Writes the data to a text file.
 void writeDown() {
     std::ofstream out;
     out.open("../out.txt");
@@ -151,6 +160,7 @@ void writeDown() {
     cout << "The info was written down to a out.txt file\n";
 }
 
+// Prints all the data.
 void printAll() {
     std::sort(bd.begin(), bd.end());
     std::sort(ev.begin(), ev.end());
@@ -166,6 +176,7 @@ void printAll() {
     }
 }
 
+// Action interface module.
 void interfaceShow() {
     cout << "Please, choose the option:\n";
     cout << "1. Print events by names.\n";
@@ -204,8 +215,10 @@ void interfaceShow() {
     }
 }
 
+// Stop flag for the threads.
 bool stop = true;
 
+// Thread method for birthday updating.
 void runDate() {
     while (stop) {
         time_t now = time(0);
@@ -232,15 +245,16 @@ void runDate() {
     }
 }
 
+// Thread method for events deleting.
 void runExpireToday() {
     while (stop) {
         time_t now = time(0);
         tm *ltm = localtime(&now);
         string temp;
-        if (ltm->tm_mday < 10) {
+        if (ltm->tm_mday - 1 < 10) {
             temp += "0";
         }
-        temp += std::to_string(ltm->tm_mday) + ".";;
+        temp += std::to_string(ltm->tm_mday - 1) + ".";;
         if (ltm->tm_mon + 1 < 10) {
             temp += "0";
         }

@@ -8,10 +8,13 @@ struct Event {
 
     Event();
 
+    // Returns the date of creation as string.
     string getCreated();
 
+    // Returns the date of expiration as string.
     string getExpires();
 
+    // Returns the description.
     string getDescription();
 
     bool operator<(Event);

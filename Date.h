@@ -17,7 +17,7 @@ struct Date {
     bool operator>(Date);
 
     bool operator==(Date);
-
+    // Gets the date as string.
     string getDate();
 
 private:
